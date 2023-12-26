@@ -1,0 +1,18 @@
+{
+    "name": "rabelo/mypi",
+    "description": "meus treinos de apicações",
+    "license": "dev",
+    "autoload": {
+        "psr-4": {
+            "src\\": "src/",
+            "App\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Lucas Rabelo",
+            "email": "lucasrabelo186@gmail.com"
+        }
+    ],
+    "require": {}
+}
