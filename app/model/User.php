@@ -1,10 +1,10 @@
 <?php
 namespace App\model;
-require_once("../../vendor/autoload.php");
+
 use App\model\Model;
 /**
  * Class Model responsavel pelas requisições da tavela usuario
- * @version ${1:1.0.0
+ * @version ${2:2.0.0
  */
 class User extends Model{
     /**
@@ -38,11 +38,16 @@ class User extends Model{
     public function delete(array $param) {
         $insert = $this->conect->prepare("DELETE FROM usuario WHERE iduser= :id");
         if($insert->execute($param)) return true;
-         return false;
+        return false;
+    }
+    /**
+     * Método para realizar select de todos os usuario
+     *
+     * @return bool
+     */
+    public function getAll() {
+        $get = $this->conect->query("SELECT * FROM usuario");
+        if($result = $get->fetch()) return $result;
+        return false;
     }
 }
-
-$a = new User();
-
-$b = $a->delete(['id' => 1]);
-var_dump($b);
