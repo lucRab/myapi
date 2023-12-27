@@ -1,6 +1,5 @@
 <?php
 namespace App\http\controller;
-require_once("../../../vendor/autoload.php");
 
 use App\http\request\Request;
 use App\model\User;
@@ -22,6 +21,7 @@ class UserController {
      * @return bool;
      */
     public function index() {
+        echo "a";
         return $this->repository->getAll();
     }
     /**
