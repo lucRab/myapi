@@ -1,8 +1,11 @@
 <?php
 namespace App\http\controller;
 
+require __DIR__."/../request/RequestUser.php";
+
 use App\http\request\Request;
 use App\model\User;
+use stdClass;
 /**
  * Classe responsavel pelo controle do usuário
  */
@@ -29,9 +32,10 @@ class UserController {
      *
      * @return void
      */
-    public function store() {
-        $param = Request::createRequest();
-        $this->repository->create($param);
+    public function store(stdClass $request) {
+        $param = Request::createRequest($request);
+        var_dump($param);
+        //$this->repository->create($param);
     }
     /**
      * Método responsavel pela atualização dos dados do usuário
