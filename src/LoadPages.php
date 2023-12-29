@@ -6,18 +6,20 @@ namespace src;
 class LoadPages {
     /**
      * Método para registrar a view de login
-     *
-     * @return void
      */
     public function LoginPage() {
         return Plates::view('login');
     }
     /**
      * Método para registar a view dos usuarios
-     *
-     * @return void
      */
     public function UserPage() {
        return Plates::view('user');
+    }
+    /**
+     * Método para registrar a view de cadastro
+     */
+    public function CadastroPage() {
+        return Plates::view('cadastro');
     }
 }

@@ -1,3 +1,8 @@
 <?php $this->layout('master') ?>
 
-<h1>Login</h1>
+<div class="master">
+    <h2>Login</h2>
+    <form action="" method="post">
+
+    </form>
+</div>

@@ -6,6 +6,7 @@ use src\Route;
  Route::route('/', 'GET', 'LoadPages', 'LoginPage');
  Route::route('/user', 'GET', 'LoadPages', 'UserPage');
  Route::route('/user', 'POST', 'UserController','index');
+ Route::route('/cadastro', 'GET', 'LoadPages', 'CadastroPage');
  Route::route('/cadastro', 'POST', 'UserController', 'store');
 
 try {
