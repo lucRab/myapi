@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-content ">
                 <h2 class="is-size-2 has-text-centered">Cadastro</h2>
-                <form action="/cadastro" method="post" class="form-cadastro" id="form">
+                <form action="/cadastro" method="post" class="form-cadastro" id="form2">
                     <div class="field">
                         <label class="label">Nome</label>
                         <div class="control">
@@ -31,10 +31,13 @@
                         </div>
                     </div>
                 </form>
-                <div id="alert" name="alert" class="has-text-danger has-text-centered"></div>
+                <p class="is-size-7 has-text-link">
+                    <a href="http://localhost:8000/">Já tem cadastro?</a>
+                </p>
+                <div id="alert" name="alert" class="has-text-danger has-text-centered is-size-7"></div>
             </div>
         </div>
     </div>
 </div>
 
-<script type="module" src="accets/js/cadastro.js"></script>
+<script type="module" src="accets/js/auth.js"></script>

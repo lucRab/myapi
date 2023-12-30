@@ -38,12 +38,15 @@ class UserController {
         try{
             $param = Request::createRequest($request);
             $id = $this->repository->create($param);
-            $param += ['id' => $id];
+            if(gettype($id) == "string") throw new Exception($id, "2002");
+            $param += ['iduser' => strval($id)];
             $token = AuthController::cadastroToken($param);
 
             return json_encode($token);
         }catch(Exception $e){
+           
             http_response_code(401);
+            if($e->getCode() == "23000") return json_encode("Esse email já estar registrado");
             return json_encode($e->getMessage());
         }
     }
@@ -63,10 +66,24 @@ class UserController {
      */
     public function destroy(stdClass $request) {
         try{
-            $param = Request::destroyResquest($request);
+            $param = Request::destroyRequest($request);
             $this->repository->update($param);
         }catch(Exception $e) {
             return $e->getMessage();
+        }
+    }
+ 
+    public function login(stdClass $request) {
+        try{
+            $param = Request::loginRequest($request);
+            $get = $this->repository->getLogin(['email' => $param['email']]);
+            if(!password_verify($param['password'], $get['password'])) throw new Exception ('Senha incorreta');
+            $token = AuthController::cadastroToken($get);
+
+            return json_encode($token);
+        }catch(Exception $e) {
+            http_response_code(401);
+            return json_encode($e->getMessage());
         }
     }
 }
