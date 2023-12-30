@@ -1,11 +1,12 @@
 <?php $this->layout('master')?>
+
     <div class="column"></div>
 <div class="columns is-mobile is-centered">
     <div class="column is-narrow is-two-fifths">
         <div class="card">
             <div class="card-content ">
                 <h2 class="is-size-2 has-text-centered">Cadastro</h2>
-                <form action="/user" method="post" class="form-cadastro">
+                <form action="/cadastro" method="post" class="form-cadastro" id="form">
                     <div class="field">
                         <label class="label">Nome</label>
                         <div class="control">
@@ -21,7 +22,7 @@
                     <div class="field">
                         <label class="label">Senha</label>
                         <div class="control">
-                            <input type="password" class="input name="password" placeholder="digite o sua senha">
+                            <input type="password" class="input" name="password" placeholder="digite o sua senha">
                         </div>
                     </div>
                     <div class="field">
@@ -30,7 +31,10 @@
                         </div>
                     </div>
                 </form>
+                <div id="alert" name="alert" class="has-text-danger has-text-centered"></div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="module" src="accets/js/cadastro.js"></script>

@@ -20,7 +20,10 @@ class User extends Model{
             //perarando o sql a ser executado
             $insert = $this->conect->prepare("INSERT INTO usuario(name, email, password) VALUES(:name, :email, :password)");
             //executa o sql e verifica se deu aldo de errado
-            if($insert->execute($param)) return true;
+            if($insert->execute($param)) {
+                $id = $this->conect->lastInsertId();
+                return $id;
+            } 
             throw new Exception("[ATENÇÃO]Erro de execução", 30);
         }
         return $this->conect;//retorna o erro caso haja.
