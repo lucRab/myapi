@@ -28,7 +28,7 @@
                     </div>
                 </form>
                 <p class="is-size-7 has-text-link">
-                    <a href="http://localhost:8000/cadastro">Não tem cadastro? Se cadastre aqui!</a>
+                    <a href="http://localhost:8000/cadastro">Não tem cadastro?</a>
                 </p>
                 <div id="alert" name="alert" class="has-text-danger has-text-centered"></div>
             </div>
