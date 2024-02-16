@@ -48,9 +48,11 @@ class Route {
             $instance = new $namespace();
             if(!method_exists($instance, $action)) throw new Exception("o método {$action} não existe na classe {$class}.");
             
-            if(empty($param)) echo $instance->$action((object) $_REQUEST);
-
-            echo $instance->$action((object) $_REQUEST, ...$param);
+            if(empty($param)) {
+                $instance->$action((object) $_REQUEST);
+            }else {
+                $instance->$action((object) $_REQUEST, ...$param);
+            }     
         }catch(Exception $e) {
             echo $e->getMessage();
         }
@@ -73,6 +75,7 @@ class Route {
                $routeFoud = $rout;
             }   
         }
+        if(!str_contains($routeFoud,'[a-z0-9\-]+')) $routeFoud = null;
         return $routeFoud;
     }
 

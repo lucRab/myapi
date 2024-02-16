@@ -14,26 +14,27 @@ use src\Route;
  Route::route('/login', 'POST', 'UserController:login');
  try {
     $routeFoud = Route::verificate();
+    $params = null;
+    if(isset($routeFoud))$params = Route::routeParam($routeFoud);
     
-    $params = Route::routeParam($routeFoud);
-
-
-
     $routes = Route::allroutes();
-     $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
- 
-     $method = $_SERVER['REQUEST_METHOD'];
-     if(!isset(Route::$routes[$method])){
+    $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
+    
+    $method = $_SERVER['REQUEST_METHOD'];
+    if(!isset(Route::$routes[$method])){
         throw new Exception("A metodo não exite");
-     }
-   
+    }
+    
     $key  = Route::getKeyRoute($uri, $method, $routeFoud);
     if(!array_key_exists($key, $routes)){
         throw new Exception("A rota não exite"); 
     }
-    
-    $controller = fn() => Route::load(Route::$routes[$method][$key]['action'][0],Route::$routes[$method][$key]['action'][1], $method, $params);
-    $controller(); 
+    if(isset($params)) {
+        $controller = fn() => Route::load(Route::$routes[$method][$key]['action'][0],Route::$routes[$method][$key]['action'][1], $method, $params);
+    }else{
+        $controller = fn() => Route::load(Route::$routes[$method][$key]['action'][0],Route::$routes[$method][$key]['action'][1], $method);
+    }
+    $controller();
  }catch(Exception $e) {
      echo $e->getMessage();
  }
