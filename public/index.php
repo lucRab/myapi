@@ -13,14 +13,15 @@ use src\Route;
  Route::route('/cadastro', 'POST', 'UserController:store');
  Route::route('/login', 'POST', 'UserController:login');
  try {
-    $routeFoud = Route::verificate();
+    $method = $_SERVER['REQUEST_METHOD'];
+    
+    $routeFoud = Route::verificate($method);
     $params = null;
     if(isset($routeFoud))$params = Route::routeParam($routeFoud);
     
-    $routes = Route::allroutes();
     $uri = parse_url($_SERVER['REQUEST_URI'])['path'];
-    
-    $method = $_SERVER['REQUEST_METHOD'];
+    $routes = Route::allroutes($method);
+
     if(!isset(Route::$routes[$method])){
         throw new Exception("A metodo não exite");
     }

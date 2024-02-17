@@ -58,9 +58,9 @@ class Route {
         }
     }
 
-    public static function verificate() {
+    public static function verificate($method) {
         $routeFoud = null;
-        foreach (self::allroutes() as $rout) {
+        foreach (self::allroutes($method) as $rout) {
             if(str_contains($rout, '{numeric}')) {
                 $rout = str_replace('{numeric}','[0-9]+' , $rout);
             }
@@ -75,18 +75,23 @@ class Route {
                $routeFoud = $rout;
             }   
         }
-        if(!str_contains($routeFoud,'[a-z0-9\-]+')) $routeFoud = null;
+        if(!str_contains($routeFoud,'[a-z0-9\-]+')) {
+            $routeFoud = null;
+        }
         return $routeFoud;
     }
 
-    public static function allroutes() {
+    public static function allroutes($method) {
         $routes = [];
-
-        foreach (self::$routes['GET'] as $key => $value) {
-            array_push($routes, $value['route']);        
+        if($method == "GET") {
+            foreach (self::$routes['GET'] as $key => $value) {
+                array_push($routes, $value['route']);        
+            }
         }
-        foreach (self::$routes['POST'] as $key => $value) {
-            array_push($routes, $value['route']); 
+        if($method == "POST") {
+            foreach (self::$routes['POST'] as $key => $value) {
+                array_push($routes, $value['route']); 
+            }
         }
         return $routes;
     }
@@ -104,7 +109,7 @@ class Route {
             }
         }
         $result = null;
-        foreach (self::$routes['GET'] as $key => $value) {
+        foreach (self::$routes[$method] as $key => $value) {
             if($value['route'] == $route){
                 $result = $key;
                 break;
