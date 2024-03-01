@@ -15,7 +15,6 @@ class Plates {
     public static function view(string $view, array $data = []) {
         $viewsPath = dirname(__FILE__,2)."/resouce/view";
         $templates = new Engine($viewsPath);
-
         echo $templates->render($view, $data);
     }
 }

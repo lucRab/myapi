@@ -26,9 +26,9 @@ class UserController {
     public function index() {
         try{
             $a = $this->repository->getAll();
-            var_dump ($a);
+            return $a;
         }catch(Exception $e) {
-            var_dump($e->getMessage());
+            return $e->getMessage();
         }
     }
     /**
@@ -36,15 +36,16 @@ class UserController {
      */
     public function store(stdClass $request) {
         try{
+            $this->repository->transaction();
             $param = Request::createRequest($request);
             $id = $this->repository->create($param);
             if(gettype($id) == "string") throw new Exception($id, "2002");
             $param += ['iduser' => strval($id)];
             $token = AuthController::cadastroToken($param);
-
+            $this->repository->commit();
             return json_encode($token);
         }catch(Exception $e){
-           
+           $this->repository->rollback();
             http_response_code(401);
             if($e->getCode() == "23000") return json_encode("Esse email já estar registrado");
             return json_encode($e->getMessage());

@@ -7,6 +7,7 @@ use Exception;
  * @version ${2:2.0.0
  */
 class User extends Model{
+    protected $table = "usuario";
     /**
      * Método para criar usuario
      * 
@@ -60,22 +61,6 @@ class User extends Model{
             //executa o sql e verifica se deu aldo de errado
             if($insert->execute($param)) return true;
             throw new Exception("[ATENÇÃO]Erro de execução", 30);
-        }
-        return $this->conect;//retorna o erro caso haja.
-    }
-    /**
-     * Método para realizar select de todos os usuario
-     *
-     * @return mixed
-     */
-    public function getAll() {
-        //verifica  se não algum erro na conexão.
-        if(gettype($this->conect) == "object") {
-            //Execução da query sql
-            $get = $this->conect->query("SELECT * FROM usuario");
-            //verifica e trata o resultado da query
-            if($result = $get->fetch()) return $result;//retorna o resultado da query
-            throw new Exception("[ATENÇÃO]Erro de execução", 30);//retorna falso caso haja algum erro
         }
         return $this->conect;//retorna o erro caso haja.
     }
