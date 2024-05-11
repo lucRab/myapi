@@ -1,6 +1,7 @@
 <?php
 namespace App\model;
 use App\model\Model;
+
 use Exception;
 /**
  * Class Model responsavel pelas requisições da tavela usuario
@@ -12,20 +13,20 @@ class User extends Model{
      * Método para criar usuario
      * 
      * @param array $param
-     * @return bool
      */
-    public function create(array $param) {
+    public function create( &$DTO):int {
         //verifica  se não algum erro na conexão.
         if(gettype($this->conect) == "object") {
+            if(!$param = $this->paramProcessing($DTO)) throw new Exception($param);
             //perarando o sql a ser executado
-            $insert = $this->conect->prepare("INSERT INTO usuario(name, email, password) VALUES(:name, :email, :password)");
+            $insert = $this->conect->prepare("INSERT INTO user(name, email, password) VALUES(:name, :email, :password)");
             //executa o sql e verifica se deu aldo de errado
-            
+            //die(var_dump($insert));
             if($insert->execute($param)) {
                 $id = $this->conect->lastInsertId();
-                return intval($id);
+                $DTO->setUserID((int) $id);
             } 
-            
+
             throw new Exception("[ATENÇÃO]Erro de execução", 30);
         }
         return $this->conect;//retorna o erro caso haja.
@@ -36,11 +37,13 @@ class User extends Model{
      * @param array $param
      * @return bool
      */
-    public function update(array $param) {
+    public function update(&$DTO):bool {
          //verifica  se não algum erro na conexão.
         if(gettype($this->conect) == "object") {
+            $param = $this->paramProcessing($DTO);
+            $param['id']= $DTO->user_id();
             //perarando o sql a ser executado
-            $insert = $this->conect->prepare("UPDATE usuario SET name= :name, email= :email, password= :password WHERE iduser= :id");
+            $insert = $this->conect->prepare("UPDATE usuario SET name= :name, email= :email, password= :password WHERE user_id= :id");
             //executa o sql e verifica se deu aldo de errado
             if($insert->execute($param)) return true;
             throw new Exception("[ATENÇÃO]Erro de execução", 30);
@@ -53,11 +56,12 @@ class User extends Model{
      * @param array $param
      * @return bool
      */
-    public function delete(array $param) {
+    public function delete(&$DTO) {
         //verifica  se não algum erro na conexão.
         if(gettype($this->conect) == "object") {
+            $param = ['id' => $DTO->user_id()];
             //perarando o sql a ser executado
-            $insert = $this->conect->prepare("DELETE FROM usuario WHERE iduser= :id");
+            $insert = $this->conect->prepare("DELETE FROM usuario WHERE user_id= :id");
             //executa o sql e verifica se deu aldo de errado
             if($insert->execute($param)) return true;
             throw new Exception("[ATENÇÃO]Erro de execução", 30);
@@ -76,5 +80,18 @@ class User extends Model{
             throw new Exception("Email incorreto");//retorna falso caso haja algum erro
         }
         return $this->conect;//retorna o erro caso haja.
+    }
+
+    protected function paramProcessing(&$DTO):array {
+        try {
+            $param = [
+                'name' => $DTO->name(),
+                'email' => $DTO->email(),
+                'password' => $DTO->password(),
+            ];
+            return $param;
+        }catch(Exception $e) {
+            return $e->getMessage();
+        }
     }
 }

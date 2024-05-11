@@ -3,7 +3,7 @@
         'name' => 'rabelo/mypi',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'b2fada23cc669b9b40f3bb5c53b3bc3bce7c865c',
+        'reference' => '1792e4fb1f9b12c88c3f3f9babf301666a5d6892',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -49,7 +49,7 @@
         'rabelo/mypi' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'b2fada23cc669b9b40f3bb5c53b3bc3bce7c865c',
+            'reference' => '1792e4fb1f9b12c88c3f3f9babf301666a5d6892',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

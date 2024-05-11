@@ -6,6 +6,7 @@ require __DIR__."/../request/RequestUser.php";
 use App\http\request\Request;
 use App\http\controller\AuthController;
 use App\model\User;
+use App\DTO\UserDto;
 use Exception;
 use stdClass;
 /**
@@ -14,6 +15,7 @@ use stdClass;
 class UserController {
     
     protected User $repository;
+    protected UserDto $DTO;
    /**
     * Método construtor da classe
     */
@@ -37,8 +39,10 @@ class UserController {
     public function store(stdClass $request) {
         try{
             $this->repository->transaction();
-            $param = Request::createRequest($request);
-            $id = $this->repository->create($param);
+            Request::createRequest($request, $this->DTO);
+            die("eh");
+            $this->repository->create($DTO);
+            $id = $DTO->user_id();
             if(gettype($id) == "string") throw new Exception($id, "2002");
             $param += ['iduser' => strval($id)];
             $token = AuthController::cadastroToken($param);
@@ -56,8 +60,8 @@ class UserController {
      */
     public function update(stdClass $request) {
         try {
-            $param = Request::updateRequest($request);
-            $this->repository->update($param);
+            Request::updateRequest($request, $this->DTO);
+            $this->repository->update($this->DTO);
         }catch(Exception $e) {
             return $e->getMessage();
         }

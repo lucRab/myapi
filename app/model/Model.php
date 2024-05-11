@@ -4,6 +4,7 @@ use src\Conexao;
 use src\radical\get;
 use src\radical\sql;
 use src\radical\update;
+use App\DTO\DTO;
 /**
  * Class Model pai para implementação dos outros models
  * @abstract
@@ -22,11 +23,13 @@ abstract class Model {
         $this->sql = new sql();
         $this->update = new update();
     }
-    abstract function create(array $param);
+    abstract function create(&$DTO);
 
-    abstract function update(array $param);
+    abstract function update( &$DTO);
 
-    abstract function delete(array $param);
+    abstract function delete( &$DTO);
+
+    abstract protected function paramProcessing(&$DTO);
 
     public function get() {
         //verifica  se não algum erro na conexão.

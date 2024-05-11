@@ -3,6 +3,7 @@ require('../vendor/autoload.php');
 require('../database/database.php');
 use database\database;
 use src\radical\tables;
+use App\http\controller\UserController;
 use App\model\Table;
 use App\model\User;
 
@@ -41,3 +42,9 @@ use App\model\User;
 // $model->insert();
 //
 //$a = database::refresh();
+$teste = new stdClass;
+$teste->name ="name";
+$teste->email = "@email";
+$teste->password = "123456";
+$controller = new UserController;
+$controller->store($teste);
