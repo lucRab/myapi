@@ -2,32 +2,28 @@
 namespace App\model;
 use App\model\Model;
 
-use Exception;
-/**
- * Class Model responsavel pelas requisições da tavela usuario
- * @version ${2:2.0.0
- */
-class User extends Model{
-    protected $table = "usuario";
+class Tickt extends Model {
+    protected $table = "tickt";
     /**
      * Método para criar usuario
      * 
-     * @param array $param
+     * @param  &$DTO
+     * @return bool
      */
-    public function create( &$DTO):int {
+    public function create( &$DTO) {
         //verifica  se não algum erro na conexão.
         if(gettype($this->conect) == "object") {
-            if(!$param = $this->paramProcessing($DTO)) throw new Exception($param);
+            $param = $this->paramProcessing($DTO);
             //perarando o sql a ser executado
-            $insert = $this->conect->prepare("INSERT INTO user(name, email, password) VALUES(:name, :email, :password)");
+            $insert = $this->conect->prepare("INSERT INTO tickt(user_id, event_id, id) VALUES(:user, :event, UUID_TO_BIN(UUID()))");
             //executa o sql e verifica se deu aldo de errado
-            //die(var_dump($insert));
+            
             if($insert->execute($param)) {
                 $id = $this->conect->lastInsertId();
-                $DTO->setUserID((int) $id);
-                return (int) $id;
+                $DTO->setTicktId($id);
+                return intval($id);
             } 
-
+            
             throw new Exception("[ATENÇÃO]Erro de execução", 30);
         }
         return $this->conect;//retorna o erro caso haja.
@@ -35,14 +31,13 @@ class User extends Model{
     /**
      * Método para atualizar usuario
      *
-     * @param array $param
+     * @param  &$DTO
      * @return bool
      */
-    public function update(&$DTO):bool {
+    public function update( &$DTO) {
          //verifica  se não algum erro na conexão.
         if(gettype($this->conect) == "object") {
             $param = $this->paramProcessing($DTO);
-            $param['id']= $DTO->user_id();
             //perarando o sql a ser executado
             $insert = $this->conect->prepare("UPDATE usuario SET name= :name, email= :email, password= :password WHERE user_id= :id");
             //executa o sql e verifica se deu aldo de errado
@@ -54,41 +49,26 @@ class User extends Model{
     /**
      * Método para deletar usuario
      *
-     * @param array $param
+     * @param  &$DTO
      * @return bool
      */
-    public function delete(&$DTO) {
+    public function delete( &$DTO) {
         //verifica  se não algum erro na conexão.
         if(gettype($this->conect) == "object") {
-            $param = ['id' => $DTO->user_id()];
+            $param['id'] = $DTO->tickt_id();
             //perarando o sql a ser executado
-            $insert = $this->conect->prepare("DELETE FROM usuario WHERE user_id= :id");
+            $insert = $this->conect->prepare("DELETE FROM tickt WHERE tickt_id= :id");
             //executa o sql e verifica se deu aldo de errado
             if($insert->execute($param)) return true;
             throw new Exception("[ATENÇÃO]Erro de execução", 30);
         }
         return $this->conect;//retorna o erro caso haja.
     }
-
-    public function getLogin(array $param) {
-        //verifica  se não algum erro na conexão.
-        if(gettype($this->conect) == "object") {
-            //Execução da query sql
-            $get = $this->conect->prepare("SELECT * FROM usuario WHERE email= :email");
-            $get->execute($param);
-            //verifica e trata o resultado da query
-            if($result = $get->fetch()) return $result;//retorna o resultado da query
-            throw new Exception("Email incorreto");//retorna falso caso haja algum erro
-        }
-        return $this->conect;//retorna o erro caso haja.
-    }
-
     protected function paramProcessing(&$DTO):array {
         try {
             $param = [
-                'name' => $DTO->name(),
-                'email' => $DTO->email(),
-                'password' => $DTO->password(),
+                'user' => $DTO->user_id(),
+                'event' => $DTO->event_id(),
             ];
             return $param;
         }catch(Exception $e) {
